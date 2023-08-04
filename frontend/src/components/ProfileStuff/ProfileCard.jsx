@@ -1,5 +1,4 @@
 import "./ProfileCard.css";
-/* import { NavLink } from "react-router-dom"; */
 
 const ProfileCard = ({ id, email, name, description, imageUrl, onDelete }) => {
   return (

@@ -1,19 +1,20 @@
-import React, { useState } from "react";
 import axios from "axios";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import Nav from "../components/nav/nav";
+import { UserContext } from "../user/UserContext.jsx"
 
 const LoginPage = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
-
+  
+  const { refetch } = useContext(UserContext);
   const nav = useNavigate();
+  const [error, setError] = useState(null);
 
   const login = async (e) => {
     e.preventDefault();
-
     setError(null);
 
     try {
@@ -22,8 +23,9 @@ const LoginPage = () => {
         email,
         password,
       });
-      const { data } = response;
-      nav("/ProfilePage");
+      const { data } = response.data;
+      refetch();
+      nav(`/ProfilePage/${data._id}`);
       console.log("successful", data);
     } catch (e) {
       console.log(e, "Login failed, please try again later");
@@ -57,7 +59,8 @@ const LoginPage = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <button type="submit">Login</button>
+        {error && <small style={{ color: "red" }}>{error}</small>}
+        <button>Login</button>
       </form>
     </>
   );

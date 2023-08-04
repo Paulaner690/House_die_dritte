@@ -20,7 +20,7 @@ userRouter.get("/user/aut", async (req, res) => {
 });
 
 // ! SignUp / Create Profile
-// # hat er etwas anders !
+// #ist anders
 userRouter.post("/user/signup", multerMiddleware.none(), async (req, res) => {
   const { name, email, password } = req.body;
   let user = new User({ name, email });
@@ -62,15 +62,21 @@ userRouter.post("/user/login", multerMiddleware.none(), async (req, res) => {
   }
 });
 
+// ! LOGOUT
+userRouter.get("/logout", (req, res) => {
+  res.clearCookie("auth");
+  res.send("OK");
+});
+
+// ! Cookie (parser) Test
+userRouter.get("/secure", authentificateToken, async (req, res) => {
+  console.log(req.userEmail);
+  res.send({ email: req.userEmail });
+});
+
 // ! JSON Web Token
 // wie ein schlüssel mit Ablaufdatum, Token wird immer mit 3 Sektionen erstellt. 1. Header = Algorithmus, 2. = Payload = nicht verschlüsselt (Bernd), 3. Verifizierungssignatur = wie werden Daten verschlüsselt, mit Secret (wie Fingerabdruck)
 // npm jasonwebtoken
-
-// ! Cookie (parser) Test
-userRouter.get("/secure/cookieTest", authentificateToken, async (req, res) => {
-  console.log(req.userEmail);
-  res.send("SUCCESS SECURE PATH");
-});
 
 /* 
 userRouter.get("/secure", async (req, res) => {

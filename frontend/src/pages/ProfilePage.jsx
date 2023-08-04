@@ -39,10 +39,10 @@ const ProfilePage = () => {
           <ProfileCard
             key={userProfile._id}
             id={userProfile._id}
+            imageUrl={userProfile.image?.url}
             email={userProfile.email}
             name={userProfile.name}
             description={userProfile.description}
-            imageUrl={userProfile.image?.url}
             onDelete={() => deleteUser(userProfile._id)}
           />
         </section>

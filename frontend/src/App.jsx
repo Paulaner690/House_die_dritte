@@ -10,19 +10,16 @@ import LoginPage from "./pages/LoginPage";
 function App() {
   return (
     <>
-      <BrowserRouter>
+      {/* <BrowserRouter> */}
         <Routes>
-          <Route path="/" element={<HomePage />}></Route>
-          <Route path="/detailPage/:id" element={<DetailPage />}></Route>
-          <Route
-            path="/categoryPage/:category"
-            element={<CategoryPage />}
-          ></Route>
-          <Route path="/createProfile" element={<CreateProfilePage />}></Route>
-          <Route path="/loginPage" element={<LoginPage />}></Route>
-          <Route path="/profilePage" element={<ProfilePage />}></Route>
+          <Route path="/" element={<HomePage />}/>
+          <Route path="/detailPage/:id" element={<DetailPage />}/>
+          <Route path="/categoryPage/:category" element={<CategoryPage />}/>
+          <Route path="/createProfile" element={<CreateProfilePage />}/>
+          <Route path="/loginPage" element={<LoginPage />}/>
+          <Route path="/profilePage/:id" element={<ProfilePage />}/>
         </Routes>
-      </BrowserRouter>
+      {/* </BrowserRouter> */}
     </>
   );
 }
