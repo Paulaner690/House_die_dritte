@@ -11,21 +11,34 @@ import { userRouter } from "./routes.js";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
+import path from "path";
 // AUT
 
-//const test = dotenv.config({path:new URL ("../.env", import.meta.url).pathname})
-//console.log(test);
+dotenv.config({
+  path: path.join(path.resolve(), "..", ".env"),
+});
 
-/* await mongoose.connect(process.env.MONGO_URI);
-app.use("/api", userRouter); */
+await mongoose.connect(process.env.MONGO_URI);
+await mongoose.connection.syncIndexes();
 
 const app = express();
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 const upload = multer({ storage: multer.memoryStorage() });
+
+// ????
+const ReactAppDistPath = new URL("../frontend/dist/", import.meta.url);
+const ReactAppIndex = new URL("../frontend/dist/index.html", import.meta.url);
 
 app.use(express.json());
 app.use(morgan("dev"));
 app.use(cors());
+app.use(express.static(ReactAppDistPath.pathname));
+/*
+ * express.static matched auf jede Datei im angegebenen Ordner
+ * und erstellt uns einen request handler for FREE
+ * app.get("/",(req,res)=> res.sendFile("path/to/index.html"))
+ * app.get("/index.html",(req,res)=> res.sendFile("path/to/index.html"))
+ */
 
 //AUT
 app.use("/api", userRouter);
@@ -41,14 +54,18 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-app.get("/api/test", (req, res) => {
-  res.send("läuft");
+app.get("/api/status", (req, res) => {
+  res.send({ status: "Ok" });
 });
 
 // alle Items bekommen
 app.get("/api/inventar", async (req, res) => {
   const data = await Inventory.find();
   res.send(data);
+});
+
+app.get("/*", (req, res) => {
+  res.sendFile(ReactAppIndex.pathname);
 });
 
 // ein Item per ID bekommen

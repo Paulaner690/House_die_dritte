@@ -35,10 +35,6 @@ const Nav = () => {
             <button type="button" onClick={logout}>Logout</button>
           </>
         )}
-
-        {/* <NavLink className="linkNav" to="/ProfilePage">PROFILEPAGE</NavLink>
-        <NavLink className="linkNav" to="/LoginPage">LOGIN</NavLink>
-        <NavLink className="linkNav" to="/CreateProfile">Sign Up</NavLink> */}
       </div>
     </>
   );
